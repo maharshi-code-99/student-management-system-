@@ -1,0 +1,5 @@
+export const REQUEST='REQUEST',SUCCESS='SUCCESS',FAILURE='FAILURE',ADD='ADD',UPDATE='UPDATE',DELETE='DELETE';const API='http://localhost:3001/students';
+export const fetchStudents=()=>async dispatch=>{dispatch({type:REQUEST});try{const r=await fetch(API);if(!r.ok)throw Error('Could not load students. Start JSON Server.');dispatch({type:SUCCESS,payload:await r.json()})}catch(e){dispatch({type:FAILURE,payload:e.message})}};
+export const addStudent=s=>async dispatch=>{const r=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(s)});if(!r.ok)throw Error('Add failed');const data=await r.json();dispatch({type:ADD,payload:data});};
+export const updateStudent=s=>async dispatch=>{const r=await fetch(`${API}/${s.id}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(s)});if(!r.ok)throw Error('Update failed');const data=await r.json();dispatch({type:UPDATE,payload:data});};
+export const deleteStudent=id=>async dispatch=>{const r=await fetch(`${API}/${id}`,{method:'DELETE'});if(!r.ok)throw Error('Delete failed');dispatch({type:DELETE,payload:id});};
